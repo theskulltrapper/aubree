@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Aubree ❤️</title>
+    <style>
+        /* CSS RESET */
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* Gradient Background */
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #a18cd1 100%);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        /* THE CARD */
+        .card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            z-index: 100;
+            display: block;
+        }
+
+        /* TEXT STYLES */
+        h1 {
+            color: #d63384;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            min-height: 50px; /* Keeps layout stable */
+        }
+
+        /* BUTTONS */
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: transform 0.2s;
+        }
+
+        /* The Happy Bounce Animation for YES */
+        @keyframes happyBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .btn-yes { 
+            background-color: #2ecc71;
+            /* Applies the bounce animation */
+            animation: happyBounce 0.8s infinite alternate; 
+        }
+        
+        /* Pause bouncing when hovering so it's easier to click */
+        .btn-yes:hover {
+            animation: none;
+            transform: scale(1.1);
+            background-color: #27ae60;
+        }
+
+        .btn-no { 
+            background-color: #ff4d6d; 
+            position: relative; 
+        }
+
+        /* HIDDEN PAGES */
+        #page2, #page3 { display: none; }
+
+        /* HEARTS */
+        .heart {
+            position: absolute;
+            color: #e91e63;
+            animation: floatUp 4s linear forwards;
+            font-size: 1.5rem;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(100vh) scale(1); opacity: 1; }
+            to { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="page1">
+        <h1>Hey Aubree...</h1>
+        <p>Do you know how much I love you?</p>
+        <div class="btn-group">
+            <button class="btn-yes" onclick="goToPage2()">Yes! ❤️</button>
+            <button class="btn-no" id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()">No</button>
+        </div>
+    </div>
+
+    <div class="card" id="page2">
+        <h1>I knew it! 🥰</h1>
+        <p id="reason-text">But here are a few reasons why...</p>
+        <button class="btn-yes" onclick="nextReason()">Tell me more</button>
+    </div>
+
+    <div class="card" id="page3">
+        <h1>I Love You!</h1>
+        <p>You are my favorite person.</p>
+        <button class="btn-yes" onclick="restart()">Read Again</button>
+    </div>
+
+    <script>
+        // --- CUSTOMIZE YOUR REASONS HERE ---
+        const reasons = [
+            "Because you have the most beautiful soul.",
+            "Because you make me laugh when I'm sad.",
+            "Because you make me feel like I'm the luckiest person in the world.",
+            "Simply because... you are YOU , my princess."
+        ];
+        
+        let reasonIndex = 0;
+
+        // NO BUTTON RUNAWAY LOGIC
+        function moveButton() {
+            const btn = document.getElementById('noBtn');
+            // Calculate random position within the screen
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth - 20);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight - 20);
+            
+            btn.style.position = 'fixed'; // Break out of layout
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        // NAVIGATION LOGIC
+        function goToPage2() {
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').style.display = 'block';
+            createHeart();
+        }
+
+        function nextReason() {
+            const p = document.getElementById('reason-text');
+            
+            if (reasonIndex < reasons.length) {
+                // Update text
+                p.innerText = reasons[reasonIndex];
+                reasonIndex++;
+            } else {
+                // Move to final page
+                document.getElementById('page2').style.display = 'none';
+                document.getElementById('page3').style.display = 'block';
+                // Rain hearts!
+                setInterval(createHeart, 200);
+            }
+        }
+
+        function restart() {
+            location.reload();
+        }
+
+        // HEART ANIMATION GENERATOR
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerText = '❤️';
+            heart.style.left = Math.random() * 100 + "vw";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+    </script>
+</body>
+</html>
