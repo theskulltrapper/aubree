@@ -181,6 +181,20 @@
             document.getElementById('page1').style.display = 'none';
             document.getElementById('page2').style.display = 'block';
             createHeart();
+
+            // Play background music (will start after this user interaction)
+            const audio = document.getElementById('bg-audio');
+            if (audio) {
+                try {
+                    audio.volume = 0.6;
+                    const playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(err => console.warn('Audio play prevented:', err));
+                    }
+                } catch (e) {
+                    console.warn('Audio play error:', e);
+                }
+            }
         }
 
         function nextReason() {
@@ -213,6 +227,7 @@
             setTimeout(() => heart.remove(), 4000);
         }
     </script>
+    <audio id="bg-audio" src="golden-hour.mp3" preload="auto" loop></audio>
     <div class="watermark" aria-hidden="true">made with ♥ by shaurya</div>
 </body>
 </html>
